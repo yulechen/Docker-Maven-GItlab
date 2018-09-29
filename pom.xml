@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>sexam</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Spring Boot for 考试系统</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -116,9 +116,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <finalName>${project.artifactId}</finalName>
-                </configuration>
             </plugin>
 
             <!--integration docker -->
@@ -126,38 +123,39 @@
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>1.1.1</version>
-                <!--docker 命令与maven 生命周期绑定-->
-
-                <!-- package  docker:build ,deploy docker:push
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                -->
                 <configuration>
-                    <!-- docker file location-->
-                    <!--
-                    <dockerDirectory>${project.basedir}</dockerDirectory>
-                    -->
+                    <!--FROM-->
                     <baseImage>hub.ersoft.cn:5000/symphony:v0.28</baseImage>
-                    <!--docker image name-->
-                    <imageName>${docker.registry}/symphony/${project.artifactId}</imageName>
+                    <!--MAINTAINER-->
+                    <maintainer>chenq@ersoft.cn</maintainer>
+                    <!--work dir-->
+                    <workdir>/app</workdir>
+                    <!--cmd-->
+                    <cmd>["bash","/start.sh"]</cmd>
+                    <!--ENTRYPOINT-->
 
+                    <!--<entryPoint>["java", "-jar", "${project.build.finalName}.jar"]</entryPoint>-->
                     <!-- optionally overwrite tags every time image is built with docker:build -->
+                    <!--用环境变量控制 -DpushImage-->
+                    <!--
                     <forceTags>true</forceTags>
-                    <!--push remote registry-->
+                    -->
+                    <!--用环境变量控制 -DpushImage-->
+                    <!--
                     <pushImage>true</pushImage>
-
-                    <!--resource-->
+                    -->
+                    <imageName>${docker.registry}/symphony/sexam</imageName>
+                    <!--add-->
                     <resources>
                         <resource>
-                            <targetPath>/</targetPath>
+                            <targetPath>/app</targetPath>
                             <directory>${project.build.directory}</directory>
-                            <include>${project.build.directory}/target/${project.artifactId}</include>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                        <resource>
+                            <targetPath>/app</targetPath>
+                            <directory>${basedir}/deploy</directory>
+                            <include>startup.sh</include>
                         </resource>
                     </resources>
 
@@ -167,4 +165,4 @@
     </build>
 
 
-</project
+</project>

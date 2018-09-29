@@ -1,0 +1,14 @@
+version: "2"
+services:
+  sexam:
+    image: hub.ersoft.cn:5000/symphony/sexam
+    ports:
+      - "8080:8080"
+    network_mode: "bridge"
+    restart: always
+    container_name: sexam
+    hostname: sexam
+    volumes:
+      - ~/var/sexam/:/root/sexam
+    environment:
+      - RUN_ENV=test
