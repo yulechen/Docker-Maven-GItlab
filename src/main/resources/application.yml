@@ -1,0 +1,40 @@
+#server port
+server:
+  port: 8080
+  hostname: localhost
+# datasource
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+         format_sql: true
+  application:
+    name: sexam
+  mvc:
+     static-path-pattern: /resources/**
+  resources:
+     static-locations: file:${sexam.upload-path},classpath:/static,classpath:/public,classpath:/resources,classpath:/META-INF/resource
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  servlet:
+     multipart:
+       maxFileSize: 200Mb
+       max-request-size: 200Mb
+  profiles:
+    active: test
+
+
+#jwt白名单页面，多个用英文逗号隔开
+#jwt:
+#  white-list: /auth/*,/mobile/sms/send-verifyCode,/web/collection/exportExcel,/web/collection/exportExcelDetail
+
+# 文件上传目录
+sexam:
+    upload-path: ${user.home}/sexam/upload
+    resources-url: http://${server.hostname}:${server.port}/resources/
