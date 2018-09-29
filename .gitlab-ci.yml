@@ -1,0 +1,15 @@
+stages:
+  - deploy
+# job
+job_deploy_qa:
+   # 指定阶段
+   stage: deploy
+   # 指定代码分支
+   only:
+     - develop
+   # 指定runner 名称
+   tags:
+    - qa-sym-group-executor
+   script:
+     - mvn clean package docker:build -DskipTests
+     - bash deploy/deploy.sh
